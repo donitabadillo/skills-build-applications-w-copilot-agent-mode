@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Card, Table } from 'react-bootstrap';
 
 const Leaderboard = () => {
   const [leaders, setLeaders] = useState([]);
@@ -17,16 +18,29 @@ const Leaderboard = () => {
   }, [endpoint]);
 
   return (
-    <div className="container mt-4">
-      <h2>Leaderboard</h2>
-      <ul className="list-group">
-        {leaders.map((leader, idx) => (
-          <li key={leader.id || idx} className="list-group-item">
-            {JSON.stringify(leader)}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Card className="mb-4">
+      <Card.Body>
+        <Card.Title as="h2" className="mb-4">Leaderboard</Card.Title>
+        <Table striped bordered hover responsive>
+          <thead>
+            <tr>
+              {leaders[0] && Object.keys(leaders[0]).map((key) => (
+                <th key={key}>{key}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {leaders.map((leader, idx) => (
+              <tr key={leader.id || idx}>
+                {Object.values(leader).map((val, i) => (
+                  <td key={i}>{typeof val === 'object' ? JSON.stringify(val) : val}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </Card.Body>
+    </Card>
   );
 };
 
